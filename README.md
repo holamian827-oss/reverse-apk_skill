@@ -31,29 +31,13 @@
 - 根据目标 App 选择匹配的 Android SDK、工具版本与架构（arm/arm64/x86）。
 - 使用 Frida 或 Xposed/LSPosed 时，请参考各项目官方安装与兼容说明。
 
-🚀 快速开始（Git 操作示例）
+🚀 快速开始
 
-克隆（HTTPS）：
+1. 获取项目（请在本地运行以下命令）：
 
     git clone https://github.com/holamian827-oss/reverse-apk_skill.git
 
-使用 SSH（已配置公钥）：
-
-    git clone git@github.com:holamian827-oss/reverse-apk_skill.git
-
-克隆指定分支或浅克隆：
-
-    git clone --branch main --single-branch https://github.com/holamian827-oss/reverse-apk_skill.git
-    git clone --depth 1 https://github.com/holamian827-oss/reverse-apk_skill.git
-
-作为子模块引入：
-
-    git submodule add https://github.com/holamian827-oss/reverse-apk_skill.git tools/reverse-apk-skill
-    git submodule update --init --recursive
-
-仅下载 README（不克隆仓库）：
-
-    curl -L https://raw.githubusercontent.com/holamian827-oss/reverse-apk_skill/main/README.md -o README_remote.md
+注意：AI 无法替你在本地或设备上执行该命令，请手动运行。
 
 准备环境示例检查：
 
