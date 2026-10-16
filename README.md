@@ -1,4 +1,3 @@
-#APK reverse skill 
 
 Android Reverse Engineering Skill
 
