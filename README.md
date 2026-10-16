@@ -1,87 +1,80 @@
 # Android Reverse Engineering Skill
 
-面向 Android 应用分析与安全研究的实践手册与工具集合，收录常用工具、环境配置与分析流程，帮助研究者在获得授权的前提下，高效进行 APK/DEX 静态与动态分析。
+简洁实用的 Android 逆向与动态分析手册与工具集，面向安全研究、兼容性测试与技术学习。为获得授权的分析提供清晰的流程、工具选择与排查建议，帮助你更高效、可复现地完成 APK/DEX 的静态与动态分析。
 
-✨ 项目简介
+✨ 核心亮点
 
-本仓库整理了 Android 逆向与动态分析过程中常用的方法与工具、环境搭建建议，以及常见问题的排查思路，目标是降低入门门槛并提升分析效率。仅供学习、研究和经授权的安全测试使用。
+- 聚合常用工具与安装/使用建议，减少环境配置成本。
+- 提供一套推荐的分析流程（静态 → 代码审查 → 动态验证 → 记录）。
+- 包含常见问题排查思路与安全/合规提醒，便于团队协作与复现。
 
 适用场景
 
-- APK 文件结构与组件分析
-- DEX 字节码与反编译代码审查
-- Java / Kotlin 逻辑定位与研究
-- 应用运行时行为观察与分析
-- 动态调试、Frida 插桩与 Hook 测试
+- APK 结构与组件快速审查
+- DEX 字节码和反编译代码分析
+- Java/Kotlin 逻辑排查与调用链定位
+- 运行时行为观测与 Hook 测试（Frida）
 - Xposed / LSPosed 模块开发与调试
-- 安全测试与漏洞复现
-- 逆向分析常见问题排查
+- 安全测试与漏洞复现（在获得授权的前提下）
 
-🛠️ 推荐工具
+🛠️ 推荐工具（按需选择）
 
-（按需选择，无需全部安装）
-
-- JADX — DEX/APK 反编译与代码浏览
-- Frida — 动态插桩与运行时函数 Hook
-- Android SDK / ADB — 设备管理、安装与日志查看
+- JADX — 反编译与代码浏览
+- Frida — 动态插桩与运行时 Hook
+- Android SDK / ADB — 设备管理、安装与日志
 - Android Studio — 构建、调试与 APK 分析
-- Xposed / LSPosed — 运行时模块开发与实验
+- Xposed / LSPosed — 运行时模块实验平台
 
 环境建议
 
-- 一台可通过 ADB 连接的 Android 设备或模拟器。
-- 根据目标应用选择匹配的 Android SDK 与工具版本。
-- 确认工具与设备 CPU 架构（arm/arm64/x86）兼容。
-- 使用 Frida 或 Xposed/LSPosed 时，请参照各项目官方安装说明。
+- 可通过 ADB 访问的物理设备或模拟器。
+- 根据目标 App 选择匹配的 Android SDK、工具版本与架构（arm/arm64/x86）。
+- 使用 Frida 或 Xposed/LSPosed 时，请参考各项目官方安装与兼容说明。
 
-🚀 快速开始（更好的 Git 指南）
+🚀 快速开始（Git 操作示例）
 
-1. 克隆仓库（HTTPS）：
+克隆（HTTPS）：
 
-   git clone https://github.com/holamian827-oss/reverse-apk_skill.git
+    git clone https://github.com/holamian827-oss/reverse-apk_skill.git
 
-   或使用 SSH（已配置公钥）：
+使用 SSH（已配置公钥）：
 
-   git clone git@github.com:holamian827-oss/reverse-apk_skill.git
+    git clone git@github.com:holamian827-oss/reverse-apk_skill.git
 
-2. 准备环境：
+克隆指定分支或浅克隆：
 
-   - 安装所需工具（例如：JADX、Frida、Android SDK / platform-tools）。
-   - 验证 ADB 能识别设备：
+    git clone --branch main --single-branch https://github.com/holamian827-oss/reverse-apk_skill.git
+    git clone --depth 1 https://github.com/holamian827-oss/reverse-apk_skill.git
 
-     adb devices
+作为子模块引入：
 
-   - 验证工具可执行：
+    git submodule add https://github.com/holamian827-oss/reverse-apk_skill.git tools/reverse-apk-skill
+    git submodule update --init --recursive
 
-     jadx --version
-     frida --version
+仅下载 README（不克隆仓库）：
 
-3. 按照仓库中的文档和 SKILL.md 中的建议进行静态/动态分析。
+    curl -L https://raw.githubusercontent.com/holamian827-oss/reverse-apk_skill/main/README.md -o README_remote.md
 
-如果你希望把本仓库作为子模块或依赖引入：
+准备环境示例检查：
 
-- 作为子模块：
-
-  git submodule add https://github.com/holamian827-oss/reverse-apk_skill.git tools/reverse-apk-skill
-
-- 仅下载 README：
-
-  curl -L https://raw.githubusercontent.com/holamian827-oss/reverse-apk_skill/main/README.md -o README_remote.md
+    adb devices
+    jadx --version
+    frida --version
 
 分析流程（推荐）
 
-1. 静态分析：检查 APK、AndroidManifest.xml、资源与 DEX 文件。
-2. 代码分析：用 JADX 等工具阅读反编译代码，定位关键类与调用链。
-3. 动态分析：在受控且有授权的测试环境下监控运行时行为并做必要的 Hook。
-4. 验证：结合静态与动态证据验证假设。
-5. 记录：写明步骤、工具版本、复现条件与结论。
+1. 静态分析：拆包并检查 APK、AndroidManifest.xml、资源、DEX 文件与签名信息。
+2. 代码审查：使用 JADX 等工具阅读反编译代码，梳理类/方法与调用链，标注可疑点。
+3. 动态验证：在受控且有授权的测试环境中使用 Frida / 调试器监控关键函数、网络与系统调用。
+4. 交叉确认：结合静态证据与运行时观测验证假设并定位问题根源。
+5. 文档化：记录步骤、命令、工具版本、复现环境与结论，便于复现与交流。
 
-📖 使用建议与注意事项
+📖 实战建议
 
-- 优先做静态分析以缩小动态分析范围。
-- 面对混淆或动态加载时，区分“确认结论”和“尚需验证的推测”。
-- 不要在公共 issue/PR 中上传真实用户数据或凭证。
-- 遵守法律与授权范围，未经授权不得进行侵入、数据窃取或规避访问控制的行为。
+- 由浅入深：先做静态再做动态，尽量缩小分析范围。
+- 明确边界：区分已验证的结论与推测性假设。
+- 版本管理：记录工具与设备版本，保证可复现性。
+- 隐私与合规：严禁在公开讨论中暴露真实用户数据或凭证；仅在合法授权下进行测试。
 
 📂 项目结构
 
@@ -89,18 +82,18 @@ reverse-apk-skill/
 ├── README.md
 └── SKILL.md
 
-（实际结构请以仓库为准）
+（以仓库实际文件为准）
 
 ⚠️ 法律与伦理声明
 
-本项目仅供学习、研究、兼容性评估和获得明确授权的安全测试使用。使用者需自行确保其行为符合适用法律法规与目标软件许可条款，对因使用本项目而产生的任何后果自行负责。
+仅限用于学习、研究、兼容性评估及在获得明确授权的安全测试。使用者须自行确保其行为符合适用法律与软件许可，对因使用本项目产生的任何后果负责。
 
-🤝 参与贡献
+🤝 贡献指南
 
-欢迎通过 Issues 或 Pull Requests 提交改进建议。请在 issue/PR 中说明环境、重现步骤与相关工具版本，且不要提交敏感信息。
+欢迎通过 Issues 或 Pull Requests 提交改进建议，请在提交中提供适用环境、复现步骤与相关工具版本，避免提交敏感信息。
 
-📄 许可协议
+📄 许可证
 
-本项目采用 GPL-3.0 许可。
+本项目采用 GPL-3.0 协议。
 
 如果本项目对你有帮助，欢迎 Star、Fork 并参与改进。
